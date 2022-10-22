@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{times}
+\textwidth 130mm
+\textheight 188mm
+\footskip 8mm
+\parindent 0in
+\newcommand{\writetitle}[2]{
+\addcontentsline{toc}{part}{\normalsize{{\it #2}\\#1}\vspace{-17pt}}\vskip 2em
+\begin{center}{\Large {\bf #1} \par}\vskip 1em{\large\lineskip .5em{\bf #2}\par}
+\end{center}\vskip .5em}
+	
+\begin{document}
+\writetitle{Searching Optimal Solutions for Multidimensional Nonlinear Functions in LibreOffice}
+{Gergana Mateeva, Dimitar Parvanov, Todor Balabanov}
+% Institute of Information and Communication Technologies
+% Bulgarian Academy of Sciences
+% acad. Georgi Bonchev Str., block 2, office 514, 1113 Sofia, Bulgaria
+% http://www.iict.bas.bg/
+% iict@bas.bg
+
+\underline{Introduction} \hspace*{4mm}
+%
+There are many types of optimization tasks in actual practice. Many efficient numerical methods have been developed for linear optimization problems (linear objective function and linear constraints). Serious difficulties arise when optimization problems contain some form of nonlinearity. There are infinite possibilities for the participation of nonlinear functions in nonlinear optimization problems, but even the simplest nonlinearity (for example, second-degree) creates enough difficulties.
+%
+Four viral test functions (Rastrigin, Sphere, Rosenbrock, Styblinski-Tang) have been selected for the needs of the present scientific study. These four functions are characterized by the fact that they can be calculated at a significant value for the dimensions (axes in multidimensional space). The search for optimal and suboptimal values is performed with LibreOffice Calc Nonlinear Solver.
+%
+Currently, there is a medium-term plan by the team developing the solver to rewrite it in the C++ programming language completely. Despite these efforts, this refinement is not yet complete, and current versions of the office suite use a Java solver that implements a hybrid global heuristic optimization algorithm. The hybrid algorithm includes Differential Evolution and Particle Swarm Optimization.
+%
+This research aims to determine the performance of the currently used nonlinear solver in LibreOffice Calc. The experiments performed and the results obtained would be extremely useful when the C++ version of the solver is completed, and it is necessary to validate its effectiveness.
+%
+The report's structure is as follows: Part one is an introduction; Part two introduces the hybrid algorithm embedded in the LibreOffice Calc Nonlinear Solver; Part three is devoted to the experiments conducted and some of the results obtained; Part four contains a conclusion and recommendations for future research.
+
+\vspace*{2mm}
+\underline{Hybrid Global Optimization Algorithm} \hspace*{4mm}
+The LibreOffice Calc office suite provides options for using several non-linear optimization algorithms. The DEPSO solver has proven to be the most effective for solving non-linear optimization problems over the years. The DEPSO hybrid algorithm uses two meta-heuristic algorithms for global optimization - Difference Evolution and Particle Swarm Optimization. Both algorithms are population-based, with the DE falling under the group of genetic algorithms. The activation of each of the two algorithms happens randomly, with a predetermined probability. By implication, the two algorithms are used with a 50/50 chance.
+%
+DE is a global optimization algorithm that relies on attempts to improve already available candidate solutions. A numerical evaluation is relied on to what extent these solutions are acceptable to improve candidate solutions. The algorithm does not rely on a gradient and allows use in problems with the extremely high dimensionality of the variable space. Since the algorithm is stochastic, it does not guarantee to reach the global optimum. It is characteristic of the DE that it finds its most practical application in continuous spaces. The optimization process is performed with a set of candidate solutions called a population. From these decisions, parents are selected, and offspring are created. Individuals with a better estimate obtained by calculating the objective function remain in the population. Recombination of parents most often occurs using crossover and mutation operations. A fundamental difference in the DE from GA is that the mutation occurs on all elements of the corresponding vector, not only on a single piece.
+%
+PSO is a global optimization algorithm that relies on candidate solutions. Solutions are visualized as particles moving through variable space. Motion is described with current position and velocity. PSO is strongly influenced by the available local best good solution and the known global best solution. Both (local and global) solutions are updated if better ones are found in the optimization process. For the implementation of PSO, no prior knowledge of the task is required, and the usage can be in a black-box fashion. It is characteristic of the PSO and the DE that is usable for high-dimensional problems. It also doesn't need a gradient.
+%
+Both algorithms, as implemented in LibreOffice Calc, have a series of configuration parameters used with their default values in the present research.
+
+\vspace*{2mm}
+\underline{Experiments \& Results}  \hspace*{4mm}
+All experiments were performed on a desktop computer configuration Intel Core i5 2.3GHz, 1 CPU 2 cores, 8GB RAM, operating system macOS High Sierra 10.13.6, and office suite LibreOffice 7.2.7.2.
+%
+Independent experiments were performed for each of the four functions. Each of the four functions was used at the following dimensions: 1, 5, 10, 50, 100, 500, and 1000. For more than 1000 dimension space, LibreOffice Calc's performance becomes so slow that it does not allow obtaining results in an acceptable computational time for the desktop computer configuration.
+%
+For all four functions, the computational time (limited to a maximum of 2000 optimization cycles) increases exponentially, in direct proportion to the increase in dimensions in the multidimensional space. The solver finds solutions close to the global optimum for all four functions, up to 100-dimensional space. This result shows that reaching the global optimum becomes difficult with the sharp increase in dimensions. For three functions, up to 100-dimensional space, the dictionary stagnates and does not use the previously pledged 2000 optimization cycles. The only exception is the spherical function, where it ends up stagnating up to about 500 dimensions.
+%
+The resulting measurements are strongly influenced by how functions are represented in LibreOffice Calc. For each dimension, a value is calculated using a formula on a separate row in the worksheet. They are calculating a large number (in the worst case, 1000) of formulas and summing them to get a single target cell, resulting in a significant delay. The computation time taken in the higher dimensions is due mainly to the mechanism by which the spreadsheet calculates the formulas and not so much to the difficulty in computing the test functions themselves.
+
+\vspace*{2mm}
+\underline{Conclusions}  \hspace*{4mm}
+This research presents results for the efficiency achieved in LibreOffice Calc Nonlinear Solver. Experiments to establish this effectiveness are based on four well-known test functions. The results show that as the variable space dimensionality increases, the optimization module's ability to determine the global optimum also decreases. A second significant conclusion from the obtained results is that the efficiency of the optimization module is highly dependent on the initial point that serves as a starting point when starting the optimization process.
+%
+Future research directions include exploring the other non-linear optimization modules in LibreOffice Calc and the C++ module currently under development.
+
+\vspace*{2mm}
+\underline{Acknowledgments} \hspace*{4mm}
+This research is supported by the Bulgarian National Science Fund with the project “Mathematical models, methods and algorithms for solving hard optimization problems to achieve high security in communications and better economic sustainability”, KP-06-N52/7/19-11-2021.
+\end{document}
